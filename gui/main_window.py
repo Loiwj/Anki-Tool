@@ -10,11 +10,12 @@ from services.gemini_client import GeminiClient
 from services.google_tts import generate_audio, sanitize_filename
 from .phonetic_tab import create_phonetic_tab
 from .audio_tab import create_audio_tab
+from .language_manager import lang_manager
 
 class MainWindow:
     def __init__(self, root, api_keys_str):
         self.root = root
-        self.root.title("Công cụ Anki đa ngôn ngữ by Dương Quốc Lợi")
+        self.update_title()
         
         # Khởi tạo clients
         self.anki_client = AnkiConnect()
@@ -26,31 +27,58 @@ class MainWindow:
         self.queue = Queue()
         
         # Biến giao diện (StringVar, BooleanVar, etc.)
-        self.language_var = tk.StringVar(value="Tiếng Hàn")
-        self.deck_name_var = tk.StringVar(value="Tiếng Hàn Tổng Hợp SC1")
+        self.ui_language_var = tk.StringVar(value="vi")  # UI language
+        self.processing_language_var = tk.StringVar(value="korean")  # Processing language
+        self.deck_name_var = tk.StringVar(value="Korean Comprehensive SC1")
         self.source_field_var = tk.StringVar(value="Korean")
         self.target_field_var = tk.StringVar(value="Phonetic")
         self.audio_field_var = tk.StringVar(value="Audio")
         self.audio_speed_var = tk.StringVar(value="0.8")
         
+        # UI references for updating
+        self.ui_elements = {}
+        
         self.create_widgets()
         self.root.after(100, self.process_queue)
+
+    def update_title(self):
+        """Update window title based on current UI language"""
+        self.root.title(lang_manager.get("app_title"))
 
     def create_widgets(self):
         # Menu
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
         help_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="Trợ giúp", menu=help_menu)
-        help_menu.add_command(label="Kiểm tra kết nối Anki", command=self.test_anki_connection)
+        self.ui_elements['help_menu'] = help_menu
+        menubar.add_cascade(label=lang_manager.get("help_menu"), menu=help_menu)
+        help_menu.add_command(label=lang_manager.get("test_anki_connection"), command=self.test_anki_connection)
 
-        # Khung chọn ngôn ngữ
+        # Khung chọn ngôn ngữ UI và xử lý
         lang_frame = ttk.Frame(self.root, padding=(10, 10, 10, 0))
         lang_frame.pack(fill="x")
-        ttk.Label(lang_frame, text="Chọn ngôn ngữ:", font=('Helvetica', 10, 'bold')).pack(side="left", padx=(0, 10))
-        lang_combo = ttk.Combobox(lang_frame, textvariable=self.language_var, values=["Tiếng Hàn", "Tiếng Nhật"], state="readonly", width=15)
-        lang_combo.pack(side="left")
-        lang_combo.bind("<<ComboboxSelected>>", self.on_language_change)
+        
+        # UI Language selection
+        ui_lang_label = ttk.Label(lang_frame, text=lang_manager.get("select_ui_language"), font=('Helvetica', 10, 'bold'))
+        ui_lang_label.pack(side="left", padx=(0, 5))
+        self.ui_elements['ui_lang_label'] = ui_lang_label
+        
+        ui_lang_combo = ttk.Combobox(lang_frame, textvariable=self.ui_language_var, 
+                                    values=[code for code, name in lang_manager.get_available_ui_languages()], 
+                                    state="readonly", width=8)
+        ui_lang_combo.pack(side="left", padx=(0, 20))
+        ui_lang_combo.bind("<<ComboboxSelected>>", self.on_ui_language_change)
+        
+        # Processing Language selection  
+        proc_lang_label = ttk.Label(lang_frame, text=lang_manager.get("select_processing_language"), font=('Helvetica', 10, 'bold'))
+        proc_lang_label.pack(side="left", padx=(0, 5))
+        self.ui_elements['proc_lang_label'] = proc_lang_label
+        
+        proc_lang_combo = ttk.Combobox(lang_frame, textvariable=self.processing_language_var,
+                                      values=[code for code, name in lang_manager.get_processing_languages()],
+                                      state="readonly", width=12)
+        proc_lang_combo.pack(side="left")
+        proc_lang_combo.bind("<<ComboboxSelected>>", self.on_processing_language_change)
         
         # Notebook (Tabs)
         notebook = ttk.Notebook(self.root, style="TNotebook")
@@ -59,29 +87,86 @@ class MainWindow:
         phonetic_tab = ttk.Frame(notebook, padding="10")
         audio_tab = ttk.Frame(notebook, padding="10")
         
-        notebook.add(phonetic_tab, text="Tạo Phiên Âm")
-        notebook.add(audio_tab, text="Tạo Audio")
+        self.ui_elements['phonetic_tab'] = (notebook, phonetic_tab, 0)
+        self.ui_elements['audio_tab'] = (notebook, audio_tab, 1)
+        
+        notebook.add(phonetic_tab, text=lang_manager.get("phonetic_tab"))
+        notebook.add(audio_tab, text=lang_manager.get("audio_tab"))
         
         # Tạo nội dung cho các tab
         create_phonetic_tab(self, phonetic_tab)
         create_audio_tab(self, audio_tab)
 
-    def on_language_change(self, event=None):
-        lang = self.language_var.get()
-        if lang == "Tiếng Nhật":
+    def on_ui_language_change(self, event=None):
+        """Handle UI language change"""
+        ui_lang = self.ui_language_var.get()
+        lang_manager.set_ui_language(ui_lang)
+        self.update_ui_language()
+        
+        # Log message in new language
+        lang_name = "English" if ui_lang == "en" else "Tiếng Việt"
+        self.log_message(lang_manager.get("ui_language_switched", lang_name))
+
+    def on_processing_language_change(self, event=None):
+        """Handle processing language change"""
+        proc_lang = self.processing_language_var.get()
+        
+        # Update field names based on processing language
+        if proc_lang == "japanese":
             self.source_field_var.set("Expression")
             self.target_field_var.set("Reading")
-        else: # Tiếng Hàn
+            self.deck_name_var.set("Japanese Comprehensive")
+        elif proc_lang == "korean":
             self.source_field_var.set("Korean")
             self.target_field_var.set("Phonetic")
-        self.log_message(f"Đã chuyển sang chế độ {lang}.")
+            self.deck_name_var.set("Korean Comprehensive SC1")
+        elif proc_lang == "vietnamese":
+            self.source_field_var.set("Vietnamese")
+            self.target_field_var.set("Phonetic")
+            self.deck_name_var.set("Vietnamese Learning")
+        elif proc_lang == "english":
+            self.source_field_var.set("English")
+            self.target_field_var.set("Phonetic")
+            self.deck_name_var.set("English Learning")
+            
+        lang_name = lang_manager.get(proc_lang)
+        self.log_message(lang_manager.get("language_switched", lang_name))
+
+    def update_ui_language(self):
+        """Update all UI elements with new language"""
+        # Update window title
+        self.update_title()
+        
+        # Update menu
+        if 'help_menu' in self.ui_elements:
+            help_menu = self.ui_elements['help_menu']
+            help_menu.entryconfig(0, label=lang_manager.get("test_anki_connection"))
+        
+        # Update labels
+        if 'ui_lang_label' in self.ui_elements:
+            self.ui_elements['ui_lang_label'].config(text=lang_manager.get("select_ui_language"))
+        if 'proc_lang_label' in self.ui_elements:
+            self.ui_elements['proc_lang_label'].config(text=lang_manager.get("select_processing_language"))
+            
+        # Update tab names
+        if 'phonetic_tab' in self.ui_elements:
+            notebook, tab, index = self.ui_elements['phonetic_tab']
+            notebook.tab(index, text=lang_manager.get("phonetic_tab"))
+        if 'audio_tab' in self.ui_elements:
+            notebook, tab, index = self.ui_elements['audio_tab']
+            notebook.tab(index, text=lang_manager.get("audio_tab"))
+
+    def on_language_change(self, event=None):
+        """Legacy method - now redirects to processing language change"""
+        self.on_processing_language_change(event)
 
     def test_anki_connection(self):
         try:
             version = self.anki_client.invoke('version')
-            messagebox.showinfo("Thành công", f"Kết nối Anki thành công! Phiên bản AnkiConnect: {version}")
+            messagebox.showinfo(lang_manager.get("success"), 
+                              lang_manager.get("anki_connection_success", version))
         except Exception as e:
-            messagebox.showerror("Lỗi", str(e))
+            messagebox.showerror(lang_manager.get("error"), str(e))
 
     def log_message(self, message, target_log=None):
         log_widget = target_log if target_log else self.log_text

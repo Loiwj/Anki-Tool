@@ -5,6 +5,45 @@ All notable changes to AnkiTool will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-08-06
+
+### 🌍 Internationalization Update
+
+#### ✨ Added
+- **Multi-language UI**: Interface now supports Vietnamese and English
+- **Extended Language Processing**: Added Vietnamese and English processing capabilities
+- **Language Manager**: Centralized translation system for UI elements
+- **Development Mode**: Enhanced console output for direct Python execution
+- **Quick Language Switching**: Separate controls for UI language and processing language
+
+#### 🔄 Enhanced Features
+- **Processing Languages**: Korean, Japanese, Vietnamese, English support
+- **UI Languages**: Vietnamese (default) and English interfaces
+- **Smart Field Mapping**: Automatic field name updates based on selected language
+- **Improved Console Output**: Detailed startup information and instructions
+- **Better Error Messages**: Localized error messages and user guidance
+
+#### 🛠️ Technical Improvements
+- **Language Manager Class**: Centralized translation management
+- **Dynamic UI Updates**: Real-time language switching without restart
+- **Enhanced Logging**: Multilingual log messages
+- **Development Experience**: Rich console output for debugging
+
+#### 📋 Language Support Matrix
+| Language | Processing | UI Support | Field Mapping |
+|----------|------------|------------|---------------|
+| Korean   | ✅         | ✅         | Korean → Phonetic |
+| Japanese | ✅         | ✅         | Expression → Reading |
+| Vietnamese | ✅       | ✅         | Vietnamese → Phonetic |
+| English  | ✅         | ✅         | English → Phonetic |
+
+#### 🚀 Usage Modes
+- **Executable**: Ready-to-run .exe file (no Python required)
+- **Development**: Direct Python execution via `python main.py`
+- **Both modes**: Full feature parity and language support
+
+---
+
 ## [1.0.0] - 2025-08-06
 
 ### 🎉 Initial Release
@@ -77,13 +116,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Web Interface**: Browser-based alternative
 - **Mobile Companion**: Android/iOS app
 - **Cloud Sync**: Cross-device synchronization
+- **Additional Languages**: Chinese, Thai, Arabic support
 
 ### 🔄 Improvements
 - **Performance**: Faster AI response times
-- **UI/UX**: Enhanced user interface
-- **Localization**: Additional language support
+- **UI/UX**: Enhanced user interface with more themes
+- **Localization**: Additional language support (Chinese, Thai, etc.)
 - **Accessibility**: Screen reader compatibility
 - **API**: RESTful API for third-party integration
+- **Cross-platform**: Linux and macOS support
 
 ---
 
@@ -99,7 +140,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Known Issues
 - Large executable size due to AI dependencies
 - Internet connection required for full functionality
-- Windows-only support (cross-platform planned for v2.0)
+- Windows-only executable (cross-platform executable planned for v2.0)
+- Development mode requires Python 3.10+ installation
 
 ### Dependencies
 - `google-generativeai`: AI integration
@@ -107,6 +149,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ttkthemes`: Modern UI themes  
 - `python-dotenv`: Environment configuration
 - `cx_Freeze`: Executable building
+
+### Usage Modes
+1. **Executable Mode**: Run AnkiTool.exe directly (no Python required)
+2. **Development Mode**: Run `python main.py` (requires Python 3.10+ and dependencies)
 
 ---
 

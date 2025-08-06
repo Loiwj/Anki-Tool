@@ -10,6 +10,8 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)](https://microsoft.com/windows)
 [![AI](https://img.shields.io/badge/AI-Google%20Gemini-orange.svg)](https://ai.google.dev)
+[![Languages](https://img.shields.io/badge/Languages-4-purple.svg)](README.md)
+[![Version](https://img.shields.io/badge/Version-1.1.0-brightgreen.svg)](CHANGELOG.md)
 
 [🚀 Tải về](#-tải-về-và-cài-đặt) • [📖 Hướng dẫn](#-hướng-dẫn-sử-dụng) • [🎯 Tính năng](#-tính-năng-chính) • [🛠️ Phát triển](#-phát-triển)
 
@@ -19,7 +21,17 @@
 
 ## 🌟 Giới thiệu
 
-**AnkiTool** là ứng dụng desktop mạnh mẽ giúp bạn tạo và quản lý thẻ học Anki một cách thông minh với sự hỗ trợ của AI Google Gemini. Ứng dụng tự động hóa quá trình tạo thẻ, tạo phiên âm IPA, và tạo file audio, giúp bạn học hiệu quả hơn.
+## 🌟 Giới thiệu
+
+**AnkiTool** là công cụ học tập thông minh sử dụng AI Gemini để tạo thẻ Anki tự động. Phiên bản 1.1 mới với **giao diện đa ngôn ngữ** và hỗ trợ **4 ngôn ngữ xử lý** khác nhau!
+
+### 🌍 **Đa ngôn ngữ hoàn toàn:**
+- **Giao diện UI**: Tiếng Việt 🇻🇳 & English 🇺🇸  
+- **Xử lý nội dung**: Tiếng Hàn 🇰🇷, Nhật 🇯🇵, Việt 🇻🇳, Anh 🇺🇸
+
+### 🚀 **Hai cách sử dụng:**
+1. **Ứng dụng độc lập** - Chạy file `.exe` (không cần cài Python)
+2. **Chế độ phát triển** - Chạy `python main.py` (cần Python 3.10+)
 
 ### ✨ Tại sao chọn AnkiTool?
 
@@ -34,23 +46,28 @@
 
 ## 🎯 Tính năng chính
 
-### 🤖 Thẻ AI-Generated
-- Tự động tạo định nghĩa từ vựng
-- Tạo ví dụ minh họa context
-- Tạo câu hỏi trắc nghiệm
-- Hỗ trợ tiếng Anh và tiếng Việt
+### 🌍 **Hỗ trợ đa ngôn ngữ**
+- **Giao diện**: Tiếng Việt & English - chuyển đổi tức thì
+- **Xử lý**: Hàn Quốc, Nhật Bản, Việt Nam, Anh - mapping tự động
+- **Thông minh**: Tự động điều chỉnh field dựa trên ngôn ngữ chọn
 
-### 🔊 Thẻ Phonetic & Audio
+### 🤖 **Thẻ AI-Generated**
+- Tự động tạo định nghĩa từ vựng với AI Gemini
+- Tạo ví dụ minh họa context phong phú
+- Tạo câu hỏi trắc nghiệm thông minh
+- Hỗ trợ đa ngôn ngữ trong xử lý
+
+### 🔊 **Thẻ Phonetic & Audio**
 - Tạo ký hiệu IPA (International Phonetic Alphabet)
-- Tạo file audio phát âm tự động
+- Tạo file audio phát âm tự động chất lượng cao
 - Hỗ trợ nhiều giọng đọc khác nhau
-- Tùy chỉnh tốc độ đọc
+- Tùy chỉnh tốc độ đọc từ 0.5x đến 1.2x
 
-### 📱 Giao diện hiện đại
-- Tab-based interface
-- Theme hỗ trợ
-- Responsive design
-- Progress indicators
+### 📱 **Giao diện hiện đại**
+- Interface đa ngôn ngữ với language switcher
+- Tab-based interface với Arc theme
+- Responsive design tối ưu
+- Progress indicators và real-time feedback
 
 ---
 
@@ -58,13 +75,33 @@
 
 ### 📋 Yêu cầu hệ thống
 
-- **OS**: Windows 10/11 (64-bit)
+- **OS**: Windows 10/11 (64-bit)  
 - **RAM**: Tối thiểu 4GB
 - **Internet**: Cần kết nối để sử dụng AI và TTS
-- **Anki**: Phiên bản 2.1.x trở lên
-- **AnkiConnect**: Add-on code `2055492159`
+- **Anki**: Phiên bản 2.1.x trở lên với AnkiConnect
+- **Python**: 3.10+ (chỉ cho development mode)
 
-### 📦 Cài đặt nhanh
+### 🎯 Hai cách sử dụng
+
+#### 🚀 **Executable Mode** (Khuyến nghị)
+```bash
+# Tải file AnkiTool-v1.1.zip (62MB)  
+# Giải nén và chạy AnkiTool.exe
+# Không cần cài Python!
+```
+
+#### �️ **Development Mode**
+```bash
+# Clone repository
+git clone https://github.com/your-username/ankitool.git
+cd ankitool
+
+# Cài đặt dependencies  
+pip install -r requirements.txt
+
+# Chạy trực tiếp
+python main.py
+```
 
 1. **Tải về AnkiTool**
    ```
