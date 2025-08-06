@@ -15,21 +15,29 @@ build_exe_options = {
         "queue",
         "time",
         "webbrowser",
-        "urllib.parse"
+        "urllib.parse",
+        "urllib3",
+        "http.client",
+        "http",
+        "ssl",
+        "socket",
+        "calendar",
+        "email",
+        "inspect",
+        "httplib2"
     ],
     "include_files": [
         ("assets/", "assets/"),  # Include assets folder
+        ("gui/", "gui/"),       # Include GUI modules
+        ("services/", "services/")  # Include services modules
     ],
     "excludes": [
         "unittest",
-        "email",
-        "http",
         "xmlrpc",
         "pdb",
         "difflib",
-        "inspect",
-        "calendar",
-        "doctest"
+        "doctest",
+        "test"
     ]
 }
 
@@ -40,8 +48,8 @@ if sys.platform == "win32":
 
 setup(
     name="AnkiTool",
-    version="1.0",
-    description="Anki Learning Tool with AI Support",
+    version="1.1.0",
+    description="Multi-language Anki Learning Tool with AI Support",
     options={"build_exe": build_exe_options},
     executables=[
         Executable(
