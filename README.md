@@ -324,7 +324,7 @@ Dự án được phát hành dưới [MIT License](LICENSE) - xem file LICENSE 
 
 ---
 
-**Made with ❤️ by AnkiTool Team**  
+**Made with ❤️ by Duong Quoc Loi**  
 *Empowering learning through AI technology*
 
 </div>
