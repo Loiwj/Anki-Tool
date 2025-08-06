@@ -93,7 +93,7 @@
 #### �️ **Development Mode**
 ```bash
 # Clone repository
-git clone https://github.com/your-username/ankitool.git
+https://github.com/Loiwj/Anki-Tool.git
 cd ankitool
 
 # Cài đặt dependencies  
@@ -304,10 +304,7 @@ ankitool/
 
 <div align="center">
 
-📧 **Email**: support@ankitool.app  
-🐛 **Bug Reports**: [GitHub Issues](https://github.com/your-username/ankitool/issues)  
-💬 **Discussions**: [GitHub Discussions](https://github.com/your-username/ankitool/discussions)  
-📖 **Wiki**: [Documentation](https://github.com/your-username/ankitool/wiki)
+📧 **Email**: duongquocloi1010@gmail.com 
 
 </div>
 
